@@ -45,25 +45,24 @@ public class SmartPhoneServiceImplTest {
                     () -> assertEquals(3, smartPhones.size())
             );
         }
-        @DisplayName("Buscar el smartphone de id=1")
+        @DisplayName("Buscar un smartphone")
         @Test
-        void findOnePhone1Test() {
+        void findOneOKTest() {
             SmartPhone phone1 = service.findOne(1L);
             assertAll(
                     () -> assertNotNull(phone1),
                     () -> assertEquals(1l, phone1.getId())
             );
         }
-        @DisplayName("Buscar el smartphone de id=999")
+        @DisplayName("Buscar un smartphone con id que no existe en la base de datos")
         @Test
-        void findOnePhone999Test() {
+        void findOneNotExistsTest() {
             SmartPhone phone999 = service.findOne(999L);
-            assertNull(phone999); // Pensamos que tiene que devolver null y lo comprobamos
+            assertNull(phone999);
         }
-        @DisplayName("Buscar el smartphone de id=null")
+        @DisplayName("Buscar un smartphone de id=null")
         @Test
         void findOneExceptionTest() {
-            // THROWS -> Verifica si se ha lanzado una excepción
             assertThrows(
                     IllegalArgumentException.class,
                     () -> service.findOne(null)
@@ -151,13 +150,10 @@ public class SmartPhoneServiceImplTest {
                     new CPU(1L, 4),
                     false,
                     new Camera(1L, "front camera", 12.5));
-            // Comprobamos nº de smartphones
             assertEquals(3,service.count());
             SmartPhone result = service.save(phone);
             assertEquals(3, service.count());
-            // Comprobamos el id
             assertEquals(1L,result.getId());
-            // Comprobamos el nombre
             SmartPhone phone1 = service.findOne(1L);
             assertEquals("One plus 9 editado",phone1.getName());
         }
@@ -166,14 +162,14 @@ public class SmartPhoneServiceImplTest {
     @DisplayName("Funcionalidad BORRAR sobre smartphones")
     @Nested
     class DeleteTest {
-        @DisplayName("Borrar el smartphone de id=null")
+        @DisplayName("Borrar un smartphone con id nulo")
         @Test
         void deleteNullTest(){
             SmartPhoneServiceImpl service = new SmartPhoneServiceImpl();
             boolean result = service.delete(null);
             assertFalse(result);
         }
-        @DisplayName("Borrar el smartphone de id=1")
+        @DisplayName("Borrar un smartphone")
         @Test
         void deleteOKTest(){
             SmartPhoneServiceImpl service = new SmartPhoneServiceImpl();
@@ -183,9 +179,9 @@ public class SmartPhoneServiceImplTest {
             service.delete(1L);
             assertEquals(2,service.count());
         }
-        @DisplayName("Borrar el smartphone de id=999 ")
+        @DisplayName("Borrar un smartphone con id que no existe en la base de datos")
         @Test
-        void deleteNotContainsTest(){
+        void deleteNotExistsTest(){
             SmartPhoneServiceImpl service = new SmartPhoneServiceImpl();
             boolean result = service.delete(999L);
             assertFalse(result);
@@ -198,5 +194,4 @@ public class SmartPhoneServiceImplTest {
             assertEquals(0, service.count());
         }
     }
-
 }

@@ -13,14 +13,14 @@ public class IRPFCalculatorTest {
     @DisplayName("Calcular IRPF de entero positivo = 100")
     void calculateIRPFTest(){
         double result = calculator.calculateIRPF(100);
-        assertEquals(21,result);
+        assertEquals(15,result);
     }
 
     @Test
     @DisplayName("Calcular IRPF de entero negativo = -100")
     void calculateIRPFNegativeTest(){
         double result = calculator.calculateIRPF(-100);
-        assertEquals(-21,result);
+        assertEquals(-15,result);
     }
 
     @Test
