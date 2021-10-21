@@ -1,11 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Employee;
-import com.example.demo.domain.SmartPhone;
-import com.example.demo.domain.pieces.Battery;
-import com.example.demo.domain.pieces.CPU;
-import com.example.demo.domain.pieces.Camera;
-import com.example.demo.domain.pieces.RAM;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.EmployeeRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class EmployeeServiceImplTest {
 
     EmployeeService service;
+    EmployeeRepository repository;
 
     @BeforeEach
     void setUp(){
@@ -45,13 +42,28 @@ class EmployeeServiceImplTest {
             assertNotNull(employees);
             assertEquals(3, employees.size());
         }
-        @DisplayName("Buscar un empleado")
+        @DisplayName("Buscar un empleado de id conocido")
         @Test
         void findOneOKTest() {
             Employee employee = service.findOne(1L);
             assertNotNull(employee);
             assertEquals(1l, employee.getId());
         }
+        @DisplayName("Buscar un empleado con cualquier id")
+        @Test
+        void findOneAnyTest(){
+            repository = mock(EmployeeRepository.class);
+            service = new EmployeeServiceImpl(repository);
+            Employee emp = new Employee(2L,"Empleado2",47);
+            when(repository.findOne(anyLong())).thenReturn(emp);
+            Employee result = service.findOne(2L);
+            assertNotNull(result);
+            assertEquals(2,result.getId());
+            assertEquals("Empleado2",result.getName());
+            assertEquals(47,result.getAge());
+            verify(repository).findOne(2L);
+        }
+
         @DisplayName("Buscar un empleado con id que no existe en la base de datos")
         @Test
         void findOneNotExistTest() {
@@ -75,14 +87,14 @@ class EmployeeServiceImplTest {
             assertEquals(1, id);
         }
         @DisplayName("Buscar un empleado con id que no existe en la base de datos - con Optional")
+        // ¡¡TIENE QUE SALTAR LA EXCEPCIÓN PORQUE ESTÁ PROGRAMADO ASÍ!!
+        // java.lang.NullPointerException
+        // Es una forma de avisar de que no está bien el id
         @Test
         void findOneNotExistOptional() {
             Optional<Employee> employeeOpt = service.findOneOptional(999L);
             assertTrue(employeeOpt.isPresent());
             assertTrue(employeeOpt.isEmpty());
-            // .NullPointerException
-            // En mi opinión, si alguien introduce mal el id, se le debería avisar para que lo revisara
-            // o, como mucho, generarle un id correcto
         }
         @DisplayName("Buscar un empleado con id nulo - con Optional")
         @Test
@@ -174,8 +186,6 @@ class EmployeeServiceImplTest {
             assertEquals(0, service.count());
         }
     }
-
-
 }
 
 
