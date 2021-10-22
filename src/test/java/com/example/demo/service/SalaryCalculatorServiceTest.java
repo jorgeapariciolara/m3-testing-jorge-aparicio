@@ -11,16 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SalaryCalculatorServiceTest {
 
-     /*
-    public double calculateSalary(Employee employee){
-        double base = 30000;
-        base += employee.getAge()* 100;
-        base += this.irpfCalculator.calculateIRPF(base);
-        base += this.ivaCalculator.calculateIVA(base);
-        return base;
-    }
-     */
-
     EmployeeService service;
 
     @BeforeEach
@@ -28,6 +18,7 @@ public class SalaryCalculatorServiceTest {
         EmployeeRepository repository = new EmployeeRepositoryImpl();
         service = new EmployeeServiceImpl(repository);
     }
+
     @DisplayName("Calcular salario de un empleado")
     @Test
     void calculateSalaryOKTest() {
