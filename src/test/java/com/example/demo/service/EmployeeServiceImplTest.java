@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+
 
 class EmployeeServiceImplTest {
 
@@ -49,21 +49,6 @@ class EmployeeServiceImplTest {
             assertNotNull(employee);
             assertEquals(1l, employee.getId());
         }
-        @DisplayName("Buscar un empleado con cualquier id")
-        @Test
-        void findOneAnyTest(){
-            repository = mock(EmployeeRepository.class);
-            service = new EmployeeServiceImpl(repository);
-            Employee emp = new Employee(2L,"Empleado2",47);
-            when(repository.findOne(anyLong())).thenReturn(emp);
-            Employee result = service.findOne(2L);
-            assertNotNull(result);
-            assertEquals(2,result.getId());
-            assertEquals("Empleado2",result.getName());
-            assertEquals(47,result.getAge());
-            verify(repository).findOne(2L);
-        }
-
         @DisplayName("Buscar un empleado con id que no existe en la base de datos")
         @Test
         void findOneNotExistTest() {

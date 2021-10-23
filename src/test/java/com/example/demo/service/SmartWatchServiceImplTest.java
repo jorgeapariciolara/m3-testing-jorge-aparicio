@@ -43,7 +43,7 @@ public class SmartWatchServiceImplTest {
                     () -> assertEquals(3,smartWatches.size())
             );
         }
-        @DisplayName("Buscar el smartwatch de id=1")
+        @DisplayName("Buscar un smartwatch de id conocido")
         @Test
         void findOneWatch1Test(){
             SmartWatch watch1 = service.findOne(1L);
@@ -52,23 +52,20 @@ public class SmartWatchServiceImplTest {
                     () -> assertEquals(1l, watch1.getId())
             );
         }
-        @DisplayName("Buscar el smartwatch de id=999")
+        @DisplayName("Buscar un smartwatch con id que no existe en la base de datos")
         @Test
         void findOneWatch999Test(){
             SmartWatch watch999 = service.findOne(999L);
             assertNull(watch999);
         }
-        /*
         @DisplayName("Buscar el smartwatch de id=null")
         @Test
         void findOneExceptionTest() {
-            // THROWS -> Verifica si se ha lanzado una excepción
             assertThrows(
                     IllegalArgumentException.class,
                     () -> service.findOne(null)
             );
         }
-        */
     }
 
     @DisplayName("Funcionalidad CREAR y MODIFICAR sobre smartwatches")
@@ -130,13 +127,10 @@ public class SmartWatchServiceImplTest {
                     new CPU(1L, 4),
                     true,
                     new HealthMonitor(1L, 0.0, 0));
-            // Comprobamos nº de smartphones
             assertEquals(3,service.count());
             SmartWatch result = service.save(smartWatch);
             assertEquals(3, service.count());
-            // Comprobamos el id
             assertEquals(1L,result.getId());
-            // Comprobamos el nombre
             smartWatch = service.findOne(1L);
             assertEquals("Fitbit sense EDITADO",smartWatch.getName());
         }
@@ -145,14 +139,14 @@ public class SmartWatchServiceImplTest {
     @DisplayName("Funcionalidad BORRAR sobre smartwatches")
     @Nested
     class DeleteTest {
-        @DisplayName("Borrar el smartwatch de id=null")
+        @DisplayName("Borrar un smartwatch de id nulo")
         @Test
         void deleteNullTest(){
             SmartWatchServiceImpl service = new SmartWatchServiceImpl();
             boolean result = service.delete(null);
             assertFalse(result);
         }
-        @DisplayName("Borrar el smartwatch de id=1")
+        @DisplayName("Borrar un smartwatch")
         @Test
         void deleteOKTest(){
             SmartWatchServiceImpl service = new SmartWatchServiceImpl();
@@ -162,7 +156,7 @@ public class SmartWatchServiceImplTest {
             service.delete(1L);
             assertEquals(2,service.count());
         }
-        @DisplayName("Borrar el smartwatch de id=999 ")
+        @DisplayName("Borrar un smartwatch con id que no existe en la base de datos")
         @Test
         void deleteNotContainsTest(){
             SmartWatchServiceImpl service = new SmartWatchServiceImpl();
@@ -176,7 +170,5 @@ public class SmartWatchServiceImplTest {
             service.deleteAll();
             assertEquals(0, service.count());
         }
-
     }
-
 }
