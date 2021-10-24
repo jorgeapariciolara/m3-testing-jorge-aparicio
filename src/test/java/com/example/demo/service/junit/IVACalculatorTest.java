@@ -1,5 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.service.junit;
 
+import com.example.demo.service.IVACalculator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.service.junit;
 
 import com.example.demo.domain.SmartDevice;
 import com.example.demo.domain.SmartPhone;
 import com.example.demo.domain.SmartWatch;
+import com.example.demo.service.SmartDeviceFacade;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,9 +1,12 @@
-package com.example.demo.service;
+package com.example.demo.service.junit;
 
 import com.example.demo.domain.SmartDevice;
 import com.example.demo.domain.SmartPhone;
 import com.example.demo.domain.SmartWatch;
 import com.example.demo.domain.pieces.*;
+import com.example.demo.service.SmartDeviceFactory;
+import com.example.demo.service.SmartPhoneServiceImpl;
+import com.example.demo.service.SmartWatchServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

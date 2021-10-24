@@ -1,10 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.service.junit;
 
 import com.example.demo.domain.SmartPhone;
 import com.example.demo.domain.pieces.Battery;
 import com.example.demo.domain.pieces.CPU;
 import com.example.demo.domain.pieces.Camera;
 import com.example.demo.domain.pieces.RAM;
+import com.example.demo.service.SmartPhoneServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

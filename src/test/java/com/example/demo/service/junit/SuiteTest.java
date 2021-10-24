@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.junit;
 
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.platform.suite.api.SelectPackages;
