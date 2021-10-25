@@ -7,7 +7,6 @@ import com.example.demo.domain.pieces.*;
 import com.example.demo.service.SmartDeviceFactory;
 import com.example.demo.service.SmartPhoneServiceImpl;
 import com.example.demo.service.SmartWatchServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SmartDeviceFactoryTest {
 
-    SmartPhoneServiceImpl smartPhoneService = new SmartPhoneServiceImpl();
-    SmartWatchServiceImpl smartWatchService = new SmartWatchServiceImpl();
     @DisplayName("Crear un smartphone utilizando el tipo = PHONE")
     @Test
     void createByTypePhoneTest() {
-        SmartPhone phone = new SmartPhone(null, "ONE SMARTPHONE",
-                new RAM(1L, "DDR4", 8),
-                new Battery(1L, 4500.0),
-                new CPU(1L, 4),
-                false,
-                new Camera(1L, "front camera", 12.5));
         SmartDevice result = SmartDeviceFactory.createByType("phone");
-
         assertNotNull(result.getId());
         assertNotNull(result.getName());
         assertNotNull(result.getRam());
@@ -40,14 +30,7 @@ public class SmartDeviceFactoryTest {
     @DisplayName("Crear un smartphone utilizando el tipo = WATCH")
     @Test
     void createByTypeWatchTest() {
-        SmartWatch watch = new SmartWatch(null, "ONE SMARTWATCH",
-                new RAM(1L, "DDR4", 2),
-                new Battery(1L, 4500.0),
-                new CPU(1L, 4),
-                true,
-                new HealthMonitor(1L, 0.0, 0));
         SmartDevice result = SmartDeviceFactory.createByType("watch");
-
         assertNotNull(result.getId());
         assertNotNull(result.getName());
         assertNotNull(result.getRam());
