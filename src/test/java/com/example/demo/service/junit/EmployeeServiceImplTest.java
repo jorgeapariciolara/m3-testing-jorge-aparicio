@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class EmployeeServiceImplTest {
 
     EmployeeService service;
-    EmployeeRepository repository;
 
     @BeforeEach
     void setUp(){
@@ -48,8 +47,12 @@ class EmployeeServiceImplTest {
         @Test
         void findOneOKTest() {
             Employee employee = service.findOne(1L);
-            assertNotNull(employee);
-            assertEquals(1l, employee.getId());
+            assertAll(
+                    () -> assertNotNull(employee),
+                    () -> assertEquals(1l, employee.getId()),
+                    () -> assertEquals("Emp 1", employee.getName()),
+                    () -> assertEquals(30, employee.getAge())
+            );
         }
         @DisplayName("Buscar un empleado con id que no existe en la base de datos")
         @Test
@@ -69,9 +72,12 @@ class EmployeeServiceImplTest {
         @Test
         void findOneOKOptional() {
             Optional<Employee> employeeOpt = service.findOneOptional(1L);
-            assertTrue(employeeOpt.isPresent());
-            Long id = employeeOpt.get().getId();
-            assertEquals(1, id);
+            assertAll(
+                    () -> assertTrue(employeeOpt.isPresent()),
+                    () -> assertEquals(1l, employeeOpt.get().getId()),
+                    () -> assertEquals("Emp 1", employeeOpt.get().getName()),
+                    () -> assertEquals(30, employeeOpt.get().getAge())
+            );
         }
         @DisplayName("Buscar un empleado con id que no existe en la base de datos - con Optional")
         // ¡¡TIENE QUE SALTAR LA EXCEPCIÓN PORQUE ESTÁ PROGRAMADO ASÍ!!
@@ -99,34 +105,42 @@ class EmployeeServiceImplTest {
         void saveIdNullTest(){
             Employee employee = new Employee(null,"Nombre",35);
             Employee result = service.save(employee);
-            assertNotNull(result);
-            assertNotNull(result.getId());
-            assertEquals(4, result.getId());
+            assertAll(
+                    () -> assertNotNull(result),
+                    () -> assertNotNull(result.getId()),
+                    () -> assertEquals(4, result.getId()),
+                    () -> assertEquals("Nombre", result.getName()),
+                    () -> assertEquals(35, result.getAge())
+            );
         }
         @DisplayName("Comprobar que se asigna un id cuando el id = 0")
         @Test
         void saveIdZeroTest(){
             Employee employee = new Employee(0L,"Nombre",35);
             Employee result = service.save(employee);
-            assertNotNull(result);
-            System.out.println(result.getId());
-            assertNotNull(result.getId());
-            assertEquals(4, result.getId());
-            assertEquals(4, service.count());
+            assertAll(
+                    () -> assertNotNull(result),
+                    () -> assertNotNull(result.getId()),
+                    () -> assertEquals(4, result.getId()),
+                    () -> assertEquals("Nombre", result.getName()),
+                    () -> assertEquals(35, result.getAge())
+            );
         }
         @DisplayName("Comprobar qué pasa con un id < 0")
         @Test
         void saveNegativeTest(){
             Employee employee = new Employee(-7L,"Nombre",35);
             Employee result = service.save(employee);
-            assertNotNull(result);
-            assertNotNull(result.getId());
-            assertEquals(-7, result.getId());
-            // org.opentest4j.AssertionFailedError:
-            // En mi opinión, este método no debería asignar el id=-3 ¿o sí?
-            // Podríamos cambiar el código e incluir la excepción de los id<0,
-            // al igual que tiene id=null || id=0
-            assertEquals(4, service.count());
+            assertAll(
+                    () -> assertNotNull(result),
+                    () -> assertNotNull(result.getId()),
+                    () -> assertEquals(4, result.getId()),
+                    // org.opentest4j.AssertionFailedError: expected: <4> but was: <-7>
+                    // En mi opinión, este método no debería asignar el id=-7 ¿o sí?
+                    // Se podría cambiar el código e incluir esta excepción (id==null||id<=0)
+                    () -> assertEquals("Nombre", result.getName()),
+                    () -> assertEquals(35, result.getAge())
+            );
         }
         @DisplayName("Comprobar que se actualizan los empleados")
         @Test
@@ -135,9 +149,12 @@ class EmployeeServiceImplTest {
             assertEquals(3,service.count());
             Employee result = service.save(employee);
             assertEquals(3, service.count());
-            assertEquals(1L,result.getId());
             Employee emp1  = service.findOne(1L);
-            assertEquals("Emp 1 - EDITADO",emp1.getName());
+            assertAll(
+                    () -> assertEquals(1L,result.getId()),
+                    () -> assertEquals("Emp 1 - EDITADO",emp1.getName()),
+                    () -> assertEquals(30,emp1.getAge())
+            );
         }
     }
 

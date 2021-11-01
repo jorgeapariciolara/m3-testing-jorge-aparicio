@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SmartPhoneServiceImplTest {
@@ -159,18 +157,33 @@ public class SmartPhoneServiceImplTest {
         @Test
         void saveUpdateTest(){
             SmartPhoneServiceImpl service = new SmartPhoneServiceImpl();
-            SmartPhone phone = new SmartPhone(1L, "One plus 9 editado",
-                    new RAM(1L, "DDR4", 8),
+            SmartPhone phone = new SmartPhone(1L, "One plus 9 EDITADO",
+                    new RAM(1L, "Invent", 8),
                     new Battery(1L, 4500.0),
-                    new CPU(1L, 4),
+                    new CPU(1L, 6),
                     false,
-                    new Camera(1L, "front camera", 12.5));
+                    new Camera(1L, "front camera EDITADO", 12.5));
             assertEquals(3,service.count());
             SmartPhone result = service.save(phone);
-            assertEquals(3, service.count());
-            assertEquals(1L,result.getId());
+            assertAll(
+                    () -> assertEquals(3, service.count()),
+                    () -> assertEquals(1L,result.getId())
+            );
             SmartPhone phone1 = service.findOne(1L);
-            assertEquals("One plus 9 editado",phone1.getName());
+            assertAll(
+                    () -> assertEquals("One plus 9 EDITADO",phone1.getName()),
+                    () -> assertEquals(1L,phone1.getRam().getId()),
+                    () -> assertEquals("Invent",phone1.getRam().getType()),
+                    () -> assertEquals(8,phone1.getRam().getGigabytes()),
+                    () -> assertEquals(1L,phone1.getBattery().getId()),
+                    () -> assertEquals(4500.0,phone1.getBattery().getCapacity()),
+                    () -> assertEquals(1L,phone1.getCpu().getId()),
+                    () -> assertEquals(6,phone1.getCpu().getCores()),
+                    () -> assertEquals(false,phone1.getWifi()),
+                    () -> assertEquals(1L,phone1.getCamera().getId()),
+                    () -> assertEquals("front camera EDITADO",phone1.getCamera().getModel()),
+                    () -> assertEquals(12.5,phone1.getCamera().getMegapixels())
+            );
         }
     }
 

@@ -4,12 +4,14 @@ import com.example.demo.domain.SmartDevice;
 import com.example.demo.domain.SmartPhone;
 import com.example.demo.domain.SmartWatch;
 import com.example.demo.service.SmartDeviceFacade;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SmartDeviceFacadeTest {
 
+    @DisplayName("Crear un smartphone")
     @Test
     void createSmartPhone() {
         SmartDevice result = SmartDeviceFacade.createSmartPhone();
@@ -40,6 +42,7 @@ class SmartDeviceFacadeTest {
         assertFalse(result instanceof SmartWatch);
     }
 
+    @DisplayName("Crear un smartwatch")
     @Test
     void createSmartWatch() {
         SmartDevice result = SmartDeviceFacade.createSmartWatch();
@@ -58,12 +61,12 @@ class SmartDeviceFacadeTest {
                 () -> assertEquals(true, result.getWifi())
         );
 
-        SmartWatch reloj = (SmartWatch) result;
+        SmartWatch watch = (SmartWatch) result;
         assertAll(
-                () -> assertNotNull(reloj.getMonitor()),
-                () -> assertEquals(1L, reloj.getMonitor().getId()),
-                () -> assertEquals(0.0, reloj.getMonitor().getBloodPressure()),
-                () -> assertEquals(0, reloj.getMonitor().getSleepQuality())
+                () -> assertNotNull(watch.getMonitor()),
+                () -> assertEquals(1L, watch.getMonitor().getId()),
+                () -> assertEquals(0.0, watch.getMonitor().getBloodPressure()),
+                () -> assertEquals(0, watch.getMonitor().getSleepQuality())
         );
 
         assertFalse(result instanceof SmartPhone);

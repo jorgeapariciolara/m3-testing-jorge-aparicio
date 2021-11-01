@@ -1,6 +1,5 @@
 package com.example.demo.service.junit;
 
-import com.example.demo.domain.SmartPhone;
 import com.example.demo.domain.SmartWatch;
 import com.example.demo.domain.pieces.*;
 import com.example.demo.service.SmartWatchServiceImpl;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SmartWatchServiceImplTest {
@@ -134,17 +132,32 @@ public class SmartWatchServiceImplTest {
         void saveUpdateTest(){
             SmartWatchServiceImpl service = new SmartWatchServiceImpl();
             SmartWatch smartWatch = new SmartWatch(1L, "Fitbit sense EDITADO",
-                    new RAM(1L, "DDR4", 2),
-                    new Battery(1L, 4500.0),
-                    new CPU(1L, 4),
+                    new RAM(541L, "DDR4-EDITADO", 2),
+                    new Battery(15L, 4500.0),
+                    new CPU(78L, 4),
                     true,
-                    new HealthMonitor(1L, 0.0, 0));
+                    new HealthMonitor(189L, 60.0, 5));
             assertEquals(3,service.count());
             SmartWatch result = service.save(smartWatch);
-            assertEquals(3, service.count());
-            assertEquals(1L,result.getId());
-            smartWatch = service.findOne(1L);
-            assertEquals("Fitbit sense EDITADO",smartWatch.getName());
+            assertAll(
+                    () -> assertEquals(3, service.count()),
+                    () -> assertEquals(1L,result.getId())
+            );
+            SmartWatch smartWatch1 = service.findOne(1L);
+            assertAll(
+                    () -> assertEquals("Fitbit sense EDITADO",smartWatch1.getName()),
+                    () -> assertEquals(541L,smartWatch1.getRam().getId()),
+                    () -> assertEquals("DDR4-EDITADO",smartWatch1.getRam().getType()),
+                    () -> assertEquals(2,smartWatch1.getRam().getGigabytes()),
+                    () -> assertEquals(15L,smartWatch1.getBattery().getId()),
+                    () -> assertEquals(4500.0,smartWatch1.getBattery().getCapacity()),
+                    () -> assertEquals(78,smartWatch1.getCpu().getId()),
+                    () -> assertEquals(4,smartWatch1.getCpu().getCores()),
+                    () -> assertEquals(true,smartWatch1.getWifi()),
+                    () -> assertEquals(189L,smartWatch1.getMonitor().getId()),
+                    () -> assertEquals(60.0,smartWatch1.getMonitor().getBloodPressure()),
+                    () -> assertEquals(5,smartWatch1.getMonitor().getSleepQuality())
+            );
         }
     }
 

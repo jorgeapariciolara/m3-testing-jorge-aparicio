@@ -5,6 +5,7 @@ import com.example.demo.service.IRPFCalculator;
 import com.example.demo.service.IVACalculator;
 import com.example.demo.service.SalaryCalculatorService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
@@ -25,6 +26,7 @@ public class SalaryCalculatorServiceMockitoTest {
         service = new SalaryCalculatorService(irpfCalculator,ivaCalculator);
     }
 
+    @DisplayName("Calcular salario de un empleado (Mockito)")
     @Test
     void name(){
 

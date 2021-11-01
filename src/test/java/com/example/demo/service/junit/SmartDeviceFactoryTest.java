@@ -36,7 +36,7 @@ public class SmartDeviceFactoryTest {
         assertNotNull(result.getWifi());
         assertTrue(result instanceof SmartWatch);
     }
-    @DisplayName("Crear un smartphone utilizando OTRO TIPO")
+    @DisplayName("Crear un smartphone utilizando  el tipo = OTRO TIPO")
     // ¡¡TIENE QUE SALTAR LA EXCEPCIÓN PORQUE ESTÁ PROGRAMADO ASÍ!!
     // java.lang.IllegalArgumentException: Unexpected value: SmartTV
     @Test
@@ -48,6 +48,8 @@ public class SmartDeviceFactoryTest {
                 () -> SmartDeviceFactory.createByType(type)
         );
         assertNull(result.getId());
+        assertFalse(result instanceof SmartPhone);
+        assertFalse(result instanceof SmartWatch);
     }
 
-    }
+}
