@@ -50,8 +50,19 @@ public class SmartWatchServiceImplTest {
             SmartWatch watch1 = service.findOne(1L);
             assertAll(
                     () -> assertNotNull(watch1),
-                    () -> assertEquals(1l, watch1.getId())
+                    () -> assertEquals(1l, watch1.getId()),
+                    () -> assertEquals("Fitbit sense", watch1.getName()),
+                    () -> assertEquals(1l, watch1.getRam().getId()),
+                    () -> assertEquals("DDR4", watch1.getRam().getType()),
+                    () -> assertEquals(2, watch1.getRam().getGigabytes()),
+                    () -> assertEquals(1L, watch1.getCpu().getId()),
+                    () -> assertEquals(4, watch1.getCpu().getCores()),
+                    () -> assertEquals(true, watch1.getWifi()),
+                    () -> assertEquals(1L, watch1.getMonitor().getId()),
+                    () -> assertEquals(0.0, watch1.getMonitor().getBloodPressure()),
+                    () -> assertEquals(0, watch1.getMonitor().getSleepQuality())
             );
+
         }
         @DisplayName("Buscar un smartwatch con id que no existe en la base de datos")
         @Test

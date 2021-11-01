@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,19 +50,31 @@ public class SmartPhoneServiceImplTest {
         @DisplayName("Buscar un smartphone")
         @Test
         void findOneOKTest() {
-            SmartPhone phone1 = service.findOne(1L);
+            SmartPhone smartPhone = service.findOne(1L);
             assertAll(
-                    () -> assertNotNull(phone1),
-                    () -> assertEquals(1l, phone1.getId())
+                    () -> assertNotNull(smartPhone),
+                    () -> assertEquals(1L, smartPhone.getId()),
+                    () -> assertEquals("One plus 9", smartPhone.getName()),
+                    () -> assertEquals(1L, smartPhone.getRam().getId()),
+                    () -> assertEquals("DDR4", smartPhone.getRam().getType()),
+                    () -> assertEquals(8, smartPhone.getRam().getGigabytes()),
+                    () -> assertEquals(1L, smartPhone.getBattery().getId()),
+                    () -> assertEquals(4500.0, smartPhone.getBattery().getCapacity()),
+                    () -> assertEquals(1L, smartPhone.getCpu().getId()),
+                    () -> assertEquals(4, smartPhone.getCpu().getCores()),
+                    () -> assertEquals(false, smartPhone.getWifi()),
+                    () -> assertEquals(1L, smartPhone.getCamera().getId()),
+                    () -> assertEquals("front camera", smartPhone.getCamera().getModel()),
+                    () -> assertEquals(12.5, smartPhone.getCamera().getMegapixels())
             );
         }
         @DisplayName("Buscar un smartphone con id que no existe en la base de datos")
         @Test
         void findOneNotExistsTest() {
-            SmartPhone phone999 = service.findOne(999L);
-            assertNull(phone999);
+            SmartPhone smartPhone = service.findOne(999L);
+            assertNull(smartPhone);
         }
-        @DisplayName("Buscar un smartphone de id=null")
+        @DisplayName("Buscar un smartphone con id nulo")
         @Test
         void findOneExceptionTest() {
             assertThrows(
@@ -121,6 +134,7 @@ public class SmartPhoneServiceImplTest {
             assertNotNull(result);
             assertNotNull(result.getId());
             assertEquals(4, result.getId());
+            assertEquals(4, service.count());
         }
         @DisplayName("Comprobar qué pasa con un id < 0")
         @Test
@@ -135,9 +149,9 @@ public class SmartPhoneServiceImplTest {
             SmartPhone result = service.save(phone);
             assertNotNull(result);
             assertNotNull(result.getId());
-            assertEquals(-3, result.getId());
+            assertEquals(4, result.getId());
             // En mi opinión, este método no debería asignar el id=-3 ¿o sí?
-            // Podríamos cambiar el código e incluir la excepción de los id<0,
+            // CAMBIO el código e incluyo la excepción de los id<0,
             // al igual que tiene id=null || id=0
             assertEquals(4, service.count());
         }

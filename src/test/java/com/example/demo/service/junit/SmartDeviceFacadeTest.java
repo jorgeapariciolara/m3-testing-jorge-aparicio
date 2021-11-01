@@ -13,16 +13,28 @@ class SmartDeviceFacadeTest {
     @Test
     void createSmartPhone() {
         SmartDevice result = SmartDeviceFacade.createSmartPhone();
+        assertAll(
+                () -> assertNotNull(result),
+                () -> assertEquals(1L, result.getId()),
+                () -> assertEquals("Default smartphone", result.getName()),
+                () -> assertEquals(1L, result.getRam().getId()),
+                () -> assertEquals("DDR4", result.getRam().getType()),
+                () -> assertEquals(8, result.getRam().getGigabytes()),
+                () -> assertEquals(1L, result.getBattery().getId()),
+                () -> assertEquals(0.0, result.getBattery().getCapacity()),
+                () -> assertEquals(1L, result.getCpu().getId()),
+                () -> assertEquals(4, result.getCpu().getCores()),
+                () -> assertTrue(result.getCpu().getOn()),
+                () -> assertEquals(true, result.getWifi())
+        );
 
-        assertNotNull(result);
-
-        assertNotNull(result.getId());
-        assertNotNull(result.getName());
-        assertNotNull(result.getRam());
-        assertNotNull(result.getBattery());
-        assertNotNull(result.getCpu());
-        assertTrue(result.getCpu().getOn());
-        assertNotNull(result.getWifi());
+        SmartPhone phone = (SmartPhone) result;
+        assertAll(
+                () -> assertNotNull(phone.getCamera()),
+                () -> assertEquals(1L,phone.getCamera().getId()),
+                () -> assertEquals("front camera",phone.getCamera().getModel()),
+                () -> assertEquals(12.5,phone.getCamera().getMegapixels())
+        );
 
         assertTrue(result instanceof SmartPhone);
         assertFalse(result instanceof SmartWatch);
@@ -32,15 +44,29 @@ class SmartDeviceFacadeTest {
     void createSmartWatch() {
         SmartDevice result = SmartDeviceFacade.createSmartWatch();
 
-        assertNotNull(result.getId());
-        assertNotNull(result.getName());
-        assertNotNull(result.getRam());
-        assertNotNull(result.getBattery());
-        assertNotNull(result.getCpu());
-        assertNotNull(result.getWifi());
+        assertAll(
+                () -> assertNotNull(result),
+                () -> assertEquals(1L, result.getId()),
+                () -> assertEquals("Default smartwatch", result.getName()),
+                () -> assertEquals(1L, result.getRam().getId()),
+                () -> assertEquals("DDR4", result.getRam().getType()),
+                () -> assertEquals(8, result.getRam().getGigabytes()),
+                () -> assertEquals(1L, result.getBattery().getId()),
+                () -> assertEquals(0.0, result.getBattery().getCapacity()),
+                () -> assertEquals(1L, result.getCpu().getId()),
+                () -> assertEquals(4, result.getCpu().getCores()),
+                () -> assertEquals(true, result.getWifi())
+        );
+
+        SmartWatch reloj = (SmartWatch) result;
+        assertAll(
+                () -> assertNotNull(reloj.getMonitor()),
+                () -> assertEquals(1L, reloj.getMonitor().getId()),
+                () -> assertEquals(0.0, reloj.getMonitor().getBloodPressure()),
+                () -> assertEquals(0, reloj.getMonitor().getSleepQuality())
+        );
 
         assertFalse(result instanceof SmartPhone);
         assertTrue(result instanceof SmartWatch);
-
     }
 }

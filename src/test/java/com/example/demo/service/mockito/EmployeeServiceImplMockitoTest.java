@@ -31,7 +31,7 @@ public class EmployeeServiceImplMockitoTest {
     class RetrieveTest {
         @DisplayName("Contar el número de empleados")
         @Test
-        void count() {
+        void countTest() {
             when(repositoryMock.count()).thenReturn(3);
             Integer result = service.count();
             assertNotNull(result);
@@ -41,7 +41,7 @@ public class EmployeeServiceImplMockitoTest {
 
         @DisplayName("Buscar todos los empleados")
         @Test
-        void findAll() {
+        void findAllTest() {
             List<Employee> employees = Arrays.asList(
                     new Employee(1l, "Paco", 35),
                     new Employee(2l, "Pilar", 27),
@@ -59,7 +59,7 @@ public class EmployeeServiceImplMockitoTest {
 
         @DisplayName("Buscar un empleado utilizando el id")
         @Test
-        void findOne() {
+        void findOneTest() {
             List<Employee> employees = Arrays.asList(
                     new Employee(1l, "Paco", 35),
                     new Employee(2l, "Pilar", 27),
@@ -96,7 +96,7 @@ public class EmployeeServiceImplMockitoTest {
 
         @DisplayName("OPTIONAL - Buscar un empleado utilizando el id")
         @Test
-        void findOneOptional() {
+        void findOneOptionalTest() {
             Employee employee1 = new Employee(1l, "Paco", 35);
             Employee employee2 = new Employee(2l, "Pilar", 27);
             Employee employee3 = new Employee(3l, "Lola", 42);
@@ -116,7 +116,7 @@ public class EmployeeServiceImplMockitoTest {
 
         @DisplayName("OPTIONAL - Buscar un empleado con id nulo")
         @Test
-        void findOneNullOptional() {
+        void findOneNullOptionalTest() {
             Employee employee1 = new Employee(1l, "Paco", 35);
             when(repositoryMock.findOne(anyLong())).thenReturn(null);
 
@@ -128,7 +128,7 @@ public class EmployeeServiceImplMockitoTest {
 
         @DisplayName("OPTIONAL - Buscar un empleado con id inexistente en la base de datos")
         @Test
-        void findOneNotContainsOptional() {
+        void findOneNotContainsOptionalTest() {
             when(repositoryMock.findOne(anyLong())).thenThrow(IllegalArgumentException.class);
 
             Optional<Employee> employeeOpt = service.findOneOptional(999L);
@@ -143,19 +143,102 @@ public class EmployeeServiceImplMockitoTest {
     class SaveTest {
         @DisplayName("Guardar un empleado")
         @Test
-        void save() {
+        void saveOKTest() {
             Employee employee = new Employee();
             Employee employee1 = new Employee(1l, "Paco", 35);
-            Employee employee2 = new Employee(2l, "Pilar", 27);
-            Employee employee3 = new Employee(3l, "Lola", 42);
-            Employee employee4 = new Employee(4l, "Pedro", 19);
-            when(repositoryMock.save(any())).thenReturn(employee);
 
-            Employee result = service.save(employee);
+            when(repositoryMock.save(any())).thenReturn(employee1);
 
-            assertNotNull(result);
-            verify(repositoryMock).save(employee);
+            Employee result1 = service.save(employee1);
+
+            assertNotNull(result1);
+            assertEquals(1,result1.getId());
+
+            verify(repositoryMock).save(employee1);
+
         }
+
+        @DisplayName("Guardar un empleado con id nulo")
+        @Test
+        void saveNullTest() {
+            Employee employee = new Employee();
+            Employee employee5 = new Employee(null, "Pedro", 19);
+            when(repositoryMock.save(employee5)).thenReturn(employee);
+
+            Employee result5 = service.save(employee5);
+
+            assertNotNull(result5);
+            assertEquals(4,result5.getId());
+            // En mi opinión, no debería asignar el valor nulo al id del empleado. Debería asignarle
+            // el id más alto, según el método employee.setId(getMaxId() + 1); pero parece que no reconoce el id
+            // del empleado y no hace nada con él. SALTA UN ERROR =>
+            // org.opentest4j.AssertionFailedError:
+            //      Expected :4
+            //      Actual   :null
+            verify(repositoryMock).save(employee5);
+
+        }
+
+        @DisplayName("Guardar un empleado con id inexistente en la base de datos")
+        @Test
+        void saveNotContainsTest() {
+            Employee employee = new Employee();
+            Employee employee2 = new Employee(999l, "Pilar", 27);
+            when(repositoryMock.save(employee2)).thenReturn(employee);
+
+            Employee result2 = service.save(employee2);
+
+            assertNotNull(result2);
+            assertEquals(4,result2.getId());
+            // En mi opinión, no debería asignar el valor nulo al id del empleado. Debería asignarle
+            // el id más alto, según el método employee.setId(getMaxId() + 1); pero parece que no reconoce el id
+            // del empleado y no hace nada con él. SALTA UN ERROR =>
+            // org.opentest4j.AssertionFailedError:
+            //      Expected :4
+            //      Actual   :null
+            verify(repositoryMock).save(employee2);
+        }
+
+        @DisplayName("Guardar un empleado con id = 0")
+        @Test
+        void saveZeroTest() {
+            Employee employee = new Employee();
+            Employee employee3 = new Employee(0l, "Lola", 42);
+            when(repositoryMock.save(employee3)).thenReturn(employee);
+
+            Employee result3 = service.save(employee3);
+
+            assertNotNull(result3);
+            assertEquals(4,result3.getId());
+            // En mi opinión, no debería asignar el valor nulo al id del empleado. Debería asignarle
+            // el id más alto, según el método employee.setId(getMaxId() + 1); pero parece que no reconoce el id
+            // del empleado y no hace nada con él. SALTA UN ERROR =>
+            // org.opentest4j.AssertionFailedError:
+            //      Expected :4
+            //      Actual   :null
+            verify(repositoryMock).save(employee3);
+        }
+
+        @DisplayName("Guardar un empleado con id negativo")
+        @Test
+        void saveNegativeTest() {
+            Employee employee = new Employee();
+            Employee employee4 = new Employee(-4l, "Pedro", 19);
+            when(repositoryMock.save(employee4)).thenReturn(employee);
+
+            Employee result4 = service.save(employee4);
+
+            assertNotNull(result4);
+            assertEquals(4,result4.getId());
+            // En mi opinión, no debería asignar el valor nulo al id del empleado. Debería asignarle
+            // el id más alto, según el método employee.setId(getMaxId() + 1); pero parece que no reconoce el id
+            // del empleado y no hace nada con él. SALTA UN ERROR =>
+            // org.opentest4j.AssertionFailedError:
+            //      Expected :4
+            //      Actual   :null
+            verify(repositoryMock).save(employee4);
+        }
+
     }
 
     @DisplayName("Funcionalidad BORRAR sobre empleados")
